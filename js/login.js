@@ -1,16 +1,20 @@
-// js/login.js
+import { auth } from "./script.js";
 
-import { login } from './auth.js';
+const loginForm = document.getElementById("login-form");
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('#login-form');
+loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    const email = loginForm["email"].value;
+    const password = loginForm["password"].value;
 
-        const email = loginForm['email'].value;
-        const password = loginForm['password'].value;
-
-        login(email, password);
-    });
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        console.log("Logged in:", userCredential.user);
+        // Redirect to homepage
+        window.location.href = "home.html";
+    } catch (error) {
+        console.error("Login error:", error.message);
+        // Show an error message
+    }
 });
