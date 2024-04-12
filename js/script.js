@@ -5,13 +5,13 @@ import { getStorage } from "firebase/storage";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
+  apiKey: "${{ secrets.FIREBASE_API_KEY }}",
+  authDomain: "uidchat.firebaseapp.com",
+  projectId: "uidchat",
+  storageBucket: "uidchat.appspot.com",
+  messagingSenderId: "283559039789",
+  appId: "1:283559039789:web:c68696743f039b199639a4",
+  databaseURL: "https://uidchat-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 const app = initializeApp(firebaseConfig);
