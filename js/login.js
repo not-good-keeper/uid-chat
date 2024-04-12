@@ -3,7 +3,7 @@ import { auth } from "./script.js";
 // Elements
 const loginForm = document.getElementById("login-form");
 const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
+const passwordInput = document.getElementById("passwordl");
 const loginError = document.getElementById("login-error");
 
 // Login event

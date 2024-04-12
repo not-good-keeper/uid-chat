@@ -3,7 +3,7 @@ import { auth, db } from "./script.js";
 // Elements
 const registerForm = document.getElementById("register-form");
 const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
+const passwordInput = document.getElementById("passwordr");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const displayNameInput = document.getElementById("displayName");
 const registerError = document.getElementById("register-error");
