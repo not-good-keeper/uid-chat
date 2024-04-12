@@ -1,32 +1,37 @@
-<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h2>Welcome User</h2>
-    <button onclick="logout()">Logout</button>
+    <header>
+        <h1>UID Chat</h1>
+        <nav>
+            <a href="chatroom.html">Chat Room</a>
+            <a href="createGroup.html">Create Group</a>
+            <a href="settings.html">Settings</a>
+            <button id="logout">Logout</button>
+        </nav>
+    </header>
 
-    <h3>Direct Messages</h3>
-    <select id="dmSelect">
-        <!-- Direct messages will be populated here -->
-    </select>
-    <button onclick="openDM()">Open DM</button>
+    <main>
+        <section id="chatRooms">
+            <h2>Chat Rooms</h2>
+            <!-- List of available chat rooms -->
+        </section>
 
-    <h3>Group Chats</h3>
-    <select id="gcSelect">
-        <!-- Group chats will be populated here -->
-    </select>
-    <button onclick="openGC()">Open Group Chat</button>
+        <section id="directMessages">
+            <h2>Direct Messages</h2>
+            <!-- List of direct message conversations -->
+        </section>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+        <button id="createGroupBtn">Create Group</button>
+    </main>
+
     <script src="js/script.js"></script>
     <script src="js/home.js"></script>
-    <script src="js/script.js" type="module"></script>
-<script src="js/firestore.js" type="module"></script>
 </body>
 </html>

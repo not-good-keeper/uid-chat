@@ -1,76 +1,69 @@
-// js/home.js
+import { auth, db } from "./script.js";
 
-let currentUserUid;
+// Elements
+const logoutBtn = document.getElementById("logout");
+const chatRoomsSection = document.getElementById("chatRooms");
+const directMessagesSection = document.getElementById("directMessages");
 
-// Check if user is logged in
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        currentUserUid = user.uid;
-        loadDirectMessages();
-        loadGroupChats();
-    } else {
-        window.location.href = 'login.html';
+// Logout event
+logoutBtn.addEventListener("click", async () => {
+    try {
+        await auth.signOut();
+        console.log("User logged out");
+        // Redirect to login page
+        window.location.href = "login.html";
+    } catch (error) {
+        console.error("Logout error:", error.message);
     }
 });
 
-function logout() {
-    auth.signOut().then(() => {
-        window.location.href = 'login.html';
-    }).catch((error) => {
-        alert(error.message);
-    });
-}
+// Function to fetch and display chat rooms
+const displayChatRooms = async () => {
+    try {
+        const querySnapshot = await db.collection("chatRooms").get();
+        
+        chatRoomsSection.innerHTML = ""; // Clear previous data
 
-function loadDirectMessages() {
-    db.collection('users').doc(currentUserUid).collection('directMessages').get()
-        .then((querySnapshot) => {
-            const dmSelect = document.getElementById('dmSelect');
-            dmSelect.innerHTML = ''; // Clear existing options
-            querySnapshot.forEach((doc) => {
-                const option = document.createElement('option');
-                option.value = doc.id;
-                option.text = doc.data().username;
-                dmSelect.appendChild(option);
-            });
-        })
-        .catch((error) => {
-            console.error("Error loading direct messages: ", error);
+        querySnapshot.forEach((doc) => {
+            const room = doc.data();
+            const roomElement = document.createElement("div");
+            roomElement.innerHTML = `
+                <a href="chatroom.html?roomId=${doc.id}">
+                    <h3>${room.name}</h3>
+                    <p>${room.description}</p>
+                </a>
+            `;
+            chatRoomsSection.appendChild(roomElement);
         });
-}
+    } catch (error) {
+        console.error("Error fetching chat rooms:", error.message);
+    }
+};
 
-function loadGroupChats() {
-    db.collection('users').doc(currentUserUid).collection('groupChats').get()
-        .then((querySnapshot) => {
-            const gcSelect = document.getElementById('gcSelect');
-            gcSelect.innerHTML = ''; // Clear existing options
-            querySnapshot.forEach((doc) => {
-                const option = document.createElement('option');
-                option.value = doc.id;
-                option.text = doc.data().name;
-                gcSelect.appendChild(option);
-            });
-        })
-        .catch((error) => {
-            console.error("Error loading group chats: ", error);
+// Function to fetch and display direct messages
+const displayDirectMessages = async () => {
+    try {
+        const userId = auth.currentUser.uid;
+        const querySnapshot = await db.collection("users").doc(userId).collection("directMessages").get();
+        
+        directMessagesSection.innerHTML = ""; // Clear previous data
+
+        querySnapshot.forEach((doc) => {
+            const message = doc.data();
+            const messageElement = document.createElement("div");
+            messageElement.innerHTML = `
+                <a href="chatroom.html?roomId=${doc.id}">
+                    <h3>${message.receiverName}</h3>
+                    <p>Last message: ${message.lastMessage}</p>
+                </a>
+            `;
+            directMessagesSection.appendChild(messageElement);
         });
-}
-
-function openDM() {
-    const dmId = document.getElementById('dmSelect').value;
-    if (dmId) {
-        // Navigate to chatroom with selected DM
-        window.location.href = `chatroom.html?dm=${dmId}`;
-    } else {
-        alert('Please select a direct message.');
+    } catch (error) {
+        console.error("Error fetching direct messages:", error.message);
     }
-}
+};
 
-function openGC() {
-    const gcId = document.getElementById('gcSelect').value;
-    if (gcId) {
-        // Navigate to chatroom with selected group chat
-        window.location.href = `chatroom.html?gc=${gcId}`;
-    } else {
-        alert('Please select a group chat.');
-    }
-}
+// Initial functions call
+displayChatRooms();
+displayDirectMessages();
